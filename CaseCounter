@@ -1,0 +1,36 @@
+public class CaseCounter2 {
+    
+    Public void updateTotalCaseCount (list <Case> CaseList) {
+        //Get a list of all contacts that need an update
+        list <Contact> ContactsToUpdate = GetListOfContactsToUpdate(CaseList);
+        
+        //Update the contacts in the list we just got
+        update ContactsToUpdate;
+    }
+        
+    
+    public list <contact> GetListOfContactsToUpdate (list <case> CaseList){
+        //HELPER METHOD 1 - GetSetOfContactIdsFromListOfCases
+        Set <Id> ContactIdList = CaseCounterHelper2.GetSetOfContactIdsFromListOfCases(CaseList);
+        
+        //HELPER METHOD 2 - GetMapOfNumCasesPerContact
+        Map <Id, integer> ContactIdWithNumCases = CaseCounterHelper2.GetMapOfNumCasesPerContact(ContactIdList);
+        
+        list <contact> AllContacts = [Select Id,TotalCaseCount__c
+                                      From Contact
+                                      Where Id in :ContactIdList];
+        
+        list <contact> ContactsToUpdate = new list <contact>();
+        
+        for (Contact c : AllContacts){
+            if (c.totalcasecount__c <> ContactIdWithNumCases.get(c.Id)){
+                c.TotalCaseCount__c = ContactIdWithNumCases.get(c.Id);
+                ContactsToUpdate.add(c);
+            }
+        }
+
+        return ContactsToUpdate;
+    }
+    
+    
+}
