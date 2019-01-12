@@ -6,8 +6,7 @@ trigger caseCounterTrigger2 on case (
         if (Trigger.isBefore) {
             
             if (Trigger.isInsert) {
-                CaseCounter2 CountMyCases = new CaseCounter2();
-                CountMyCases.updateTotalCaseCount(trigger.new);
+
             }
             
             if (Trigger.isUpdate) {
@@ -16,13 +15,14 @@ trigger caseCounterTrigger2 on case (
             }
             
             if (Trigger.isDelete) {
-                CaseCounter2 CountMyCases = new CaseCounter2();
-                CountMyCases.updateTotalCaseCount(trigger.old);
+
             }
         }
         
         if (Trigger.IsAfter) {
             if (Trigger.isInsert) {
+                CaseCounter2 CountMyCases = new CaseCounter2();
+                CountMyCases.updateTotalCaseCount(trigger.new);
                 
             } 
             
@@ -31,6 +31,8 @@ trigger caseCounterTrigger2 on case (
             }
             
             if (Trigger.isDelete) {
+                CaseCounter2 CountMyCases = new CaseCounter2();
+                CountMyCases.updateTotalCaseCount(trigger.old);
                 
             }
         }
