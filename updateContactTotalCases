@@ -1,0 +1,38 @@
+public class updateContactTotalCases {
+    
+    set <Id> ContactIdSet = new set <Id>();
+
+    public updateContactTotalCases(list <case> newList){
+        for (case c : newList){
+            contactIdSet.add(c.contactId);
+        }
+    }
+    
+    
+    public updateContactTotalCases(Map <Id, Case> oldMap, list <case> newList){
+        for (case c : newList){
+            if (c.contactId != oldMap.get(c.Id).contactId){
+                contactIdSet.add(c.contactId);
+                contactIdSet.add(oldMap.get(c.Id).contactId);
+            }
+            
+        }
+        
+    }
+    
+    public void updateTotalCaseCount(){
+        if (contactIdSet.size() > 0){
+            list <contact> contactsToUpdate = [SELECT id, TotalCaseCount__c, (SELECT Id from cases)
+                                               FROM contact
+                                               WHERE id in :contactIdSet];
+            
+            for (contact specificContact : contactsToUpdate){
+                if (specificContact.TotalCaseCount__c != specificContact.cases.size()){
+                    specificContact.TotalCaseCount__c = specificContact.cases.size();
+                }
+            }
+            update contactsToUpdate;
+        }
+    }
+
+}
