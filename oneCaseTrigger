@@ -1,0 +1,32 @@
+trigger oneCaseTrigger on Case (
+    before insert, after insert,
+    before update, after update, 
+    before delete, after delete) {
+        
+        if (Trigger.isBefore) {
+            if (Trigger.isInsert) {
+                // Call class logic here!
+            } 
+            if (Trigger.isUpdate) {
+                // Call class logic here!
+            }
+            if (Trigger.isDelete) {
+                // Call class logic here!
+            }
+        }
+        
+        if (Trigger.IsAfter) {
+            if (Trigger.isInsert || Trigger.isUndelete) {
+                updateContactTotalCases afterinsert = new updateContactTotalCases(trigger.New);
+                afterinsert.updateTotalCaseCount();
+            } 
+            if (Trigger.isUpdate) {
+                updateContactTotalCases afterupdate = new updateContactTotalCases(trigger.oldMap, trigger.New);
+                afterupdate.updateTotalCaseCount();
+            }
+            if (Trigger.isDelete) {
+                updateContactTotalCases afterdelete= new updateContactTotalCases(trigger.Old);
+                afterdelete.updateTotalCaseCount();
+            }
+        }
+    }
